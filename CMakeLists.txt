@@ -24,3 +24,7 @@ target_link_libraries(binary_multiplexer_twist ${catkin_LIBRARIES})
 
 add_executable(random_mover src/random_mover.cpp)
 target_link_libraries(random_mover ${catkin_LIBRARIES})
+
+add_executable(safety_controller src/safety_controller.cpp)
+target_link_libraries(safety_controller ${catkin_LIBRARIES})
+

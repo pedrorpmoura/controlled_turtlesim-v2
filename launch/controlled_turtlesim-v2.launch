@@ -4,8 +4,8 @@
 		<node pkg="turtlesim" name="teleop" type="turtle_teleop_key"/>
 		<node pkg="controlled_turtlesim-v2" name="random_mover" type="random_mover"/>
 
-		<node pkg="controlled_turtlesim-v2" name="binary_multiplexer_twist" 
-			  type="binary_multiplexer_twist" output="screen">
+		<node pkg="controlled_turtlesim-v2" name="binary_multiplexer_twist1" 
+			  type="binary_multiplexer_twist">
 			
 			<param name="time" type="int" value="3"/>		
 			<remap from="high" to="turtle1/cmd_vel"/>
@@ -14,8 +14,25 @@
 		</node>
 	</group>
 
+
+	<node pkg="controlled_turtlesim-v2" name="safety_controller"
+		  type="safety_controller" output="screen">
+		<remap from="pose" to="turtle1/pose"/>
+	</node>
+
+
+	<node pkg="controlled_turtlesim-v2" name="binary_multiplexer_twist2"
+		  type="binary_multiplexer_twist" output="screen">
+		
+		<param name="time" type="int" value="1"/>
+		<remap from="high" to="cmd_vel"/>
+		<remap from="low"  to="movement/out"/>
+
+	</node>
+
+
 	<node pkg="turtlesim" name="simulator" type="turtlesim_node">
-		<remap from="turtle1/cmd_vel" to="movement/out"/>
+		<remap from="turtle1/cmd_vel" to="out"/>
 	</node>
 
 </launch>
