@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include "controlled_turtlesim-v2/binary_multiplexer.hpp"
+#include "controlled_turtlesim_v2/binary_multiplexer.hpp"
 #include <std_msgs/Bool.h>
 
 
