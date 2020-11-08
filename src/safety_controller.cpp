@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <turtlesim/Pose.h>
+#include <turtlesim/SetPen.h>
 #include <geometry_msgs/Twist.h>
 #include <math.h>
 
@@ -46,8 +47,12 @@ class SafetyController {
 
 		ros::NodeHandle nh;
 		ros::Subscriber pose_sub;
-		ros::Publisher cmd_vel_pub; 
+		ros::Publisher cmd_vel_pub;
+		ros::ServiceClient pen_client;
+
+		void setPenColor(int r, int g, int b);
 };
+
 
 
 SafetyController::SafetyController(void) {
@@ -60,6 +65,7 @@ SafetyController::SafetyController(void) {
 			if (x < 1.0 or x > 10.0 or y < 1.0 or y > 10.0) {
 				ROS_INFO("SAFETY INITATED");
 				safety_activated = true;
+				setPenColor(255, 0, 0);
 			}
 
 			turtle_pose.x = x;
@@ -71,13 +77,40 @@ SafetyController::SafetyController(void) {
 
 	// setup publisher
 	cmd_vel_pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 10);
+
+	// setup service client
+	pen_client = nh.serviceClient<turtlesim::SetPen>("turtle1/set_pen");
 }
 
+
+void SafetyController::setPenColor(int r, int g, int b) {
+	
+	turtlesim::SetPen::Request req;
+	turtlesim::SetPen::Response res;
+
+	req.r = r;
+	req.g = g;
+	req.b = b;
+	req.width = 2;
+
+	ros::service::waitForService("turtle1/set_pen", ros::Duration(5));
+	bool success = pen_client.call(req, res);
+
+	if (success) {
+		ROS_INFO("Changed pen color");
+	} else {
+		ROS_INFO("Error changing pen color");
+	}
+}
 
 void SafetyController::loop(void) {
 	
 	ros::Rate rate(10);
 	while (ros::ok()) {
+
+		if (not safety_activated) {
+			setPenColor(255,255,255);
+		}
 		
 		bool in_center = turtleInCenter(turtle_pose);
 		if (safety_activated and not in_center) {
