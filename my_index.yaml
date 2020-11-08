@@ -1,8 +1,0 @@
-%YAML 1.1
----
-packages:
-- controlled_turtlesim-v2
-
-configurations:
-    minimal:
-        launch: [controlled_turtlesim-v2/launch/controlled_turtlesim-v2.launch]

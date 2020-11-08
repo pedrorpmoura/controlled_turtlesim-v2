@@ -1,17 +1,19 @@
+#pragma once
 #include <ros/ros.h>
 
 template <typename T>
 class BinaryMultiplexer {
 	
 	public:
-		BinaryMultplexer(void);
-		void loop(void)
+		BinaryMultiplexer(void);
+		void loop(void);
 		
 	private:
-		int time;
-
+		bool allow_low_messages = false;
+		
+		ros::Timer timer;
 		ros::NodeHandle nh;
 		ros::Subscriber high_sub;
 		ros::Subscriber low_sub;
 		ros::Publisher out_pub;
-}
+};

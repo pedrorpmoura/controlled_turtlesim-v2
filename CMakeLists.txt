@@ -18,8 +18,10 @@ include_directories(
 )
 
 
+# add_executable(binary_multiplexer src/binary_multiplexer.cpp)
+# target_link_libraries(binary_multiplexer ${catkin_LIBRARIES})
 
-add_executable(binary_multiplexer_twist src/binary_multiplexer_twist.cpp)
+add_executable(binary_multiplexer_twist src/binary_multiplexer_twist.cpp src/binary_multiplexer.cpp)
 target_link_libraries(binary_multiplexer_twist ${catkin_LIBRARIES})
 
 add_executable(random_mover src/random_mover.cpp)
